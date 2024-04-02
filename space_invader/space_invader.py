@@ -1,6 +1,7 @@
 # import pygame
 import game_files.object as gf
 from game_files.player import Player
+from game_files.enemy import Enemy
 
 class Game:
     def __init__(self) -> None:
@@ -22,18 +23,15 @@ class Game:
 
         # creating enemy
         self.enemy = None
-
+        self.background = gf.pygame.image.load("./images/background.png")
 
     def run(self):
         # game loop
         running = True
-        objectsSpeed = 1
+        objectsSpeed = 5
         self.player = Player(self.screenWidth, self.screenHeight)
+        self.enemy = Enemy(self.screenWidth, self.screenHeight, objectsSpeed)
         while running:
-
-            self.screen.fill((0, 150, 0))
-            # self.player.xSpeed = objectsSpeed
-
             for event in gf.pygame.event.get():
                 match event.type:
                     case gf.pygame.QUIT:
@@ -50,17 +48,31 @@ class Game:
                     case gf.pygame.KEYUP:
                         if event.key == gf.pygame.K_LEFT or event.key == gf.pygame.K_RIGHT:
                             self.player.xSpeed = 0
+                        # match event.key:
+                        #     case gf.pygame.K_LEFT:
+                        #         self.player.xSpeed = 0
+                        #     case gf.pygame.K_RIGHT:
+                        #         self.player.xSpeed = 0
 
                     case _:
                         pass
 
             self.player.update()
-            self.update_screen()
+
+            if self.enemy.update() and self.__check_game_over_conditions():
+                running = False
+
+            self.__update_screen()
 
             gf.pygame.display.update()
 
-    def update_screen(self):
+    def __update_screen(self):
+        self.screen.blit(self.background, (0, 0))
         self.screen.blit(self.player.image, (self.player.x, self.player.y))
+        self.screen.blit(self.enemy.image, (self.enemy.x, self.enemy.y))
+
+    def __check_game_over_conditions(self) -> bool:
+        return self.enemy.y + self.enemy.imageHeight >= self.player.y
 
     
 game = Game()
