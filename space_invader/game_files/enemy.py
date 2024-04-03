@@ -9,19 +9,25 @@ class Enemy(ob.Object):
         super().__init__(randint(0, screenWidth - (imageWidth // 2)), 0, objectSpeed * self.speedFactor, 0, image, imageWidth,
                          imageHeight, screenWidth, screenHeight)
         
-    def update(self) -> bool:
+    # def update(self) -> bool:
+    def update(self):
         self.x += self.xSpeed * self.speedFactor
         self.y += self.ySpeed * self.speedFactor
-        result = False
+        # result = False
         if self.x <= 0:
             self.x = 0
             self.xSpeed *= -1
             self.y += 40
-            result = True
+            # result = True
         elif self.x >= self.screenWidth - self.imageWidth:
             self.x = self.screenWidth - self.imageWidth
             self.xSpeed *= -1
             self.y += 40
-            result = True
+            # result = True
         
-        return result
+        # return result
+    
+    def reset(self):
+        self.y = 0
+        self.x = randint(0, self.screenWidth - (self.imageWidth // 2))
+        self.speedFactor += 0.1

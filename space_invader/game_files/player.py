@@ -5,6 +5,7 @@ class Player(ob.Object):
         image = ob.pygame.image.load("./images/player-ship.png")
         imageWidth = 64
         imageHeight = 64
+        image.get_rect()
         super().__init__((screenWidth // 2) - (imageWidth // 2), screenHeight - imageHeight - 10, 0, 0, image, imageWidth, imageHeight,
                          screenWidth, screenHeight)
         

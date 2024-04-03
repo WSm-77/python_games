@@ -25,20 +25,27 @@ class Game:
         self.backgroundMusic = ob.pygame.mixer.music.load("./sounds/background.mp3")
 
         # creating player
-        self.player = None
+        self.player: Player = None
 
-        # creating enemy
-        self.enemy = None
+        # creating enemys
+        self.enemys: list[Enemy] = []
 
         # creating bullets queue
-        self.bullets = deque()
+        self.bullets: deque[Bullet] = deque()
 
-    def run(self):
-        ob.pygame.mixer.music.play(-1)
+        # score
+        self.score = 0
+        self.scorePosition = (10, 10)
+        self.font = ob.pygame.font.Font("freesansbold.ttf", 32)
+
+    def run(self, numberOfEnemies = 6, playMusic = True):
+        if playMusic:
+            ob.pygame.mixer.music.play(-1)
         objectsSpeed = 5
 
         self.player = Player(self.screenWidth, self.screenHeight)
-        self.enemy = Enemy(self.screenWidth, self.screenHeight, objectsSpeed)
+        self.enemys = [Enemy(self.screenWidth, self.screenHeight, objectsSpeed) for _ in range(numberOfEnemies)]
+
 
         # game loop
         running = True
@@ -60,48 +67,83 @@ class Game:
                     case _:
                         pass
 
+            # player movement
             keys = ob.pygame.key.get_pressed()
-            if keys[ob.pygame.K_LEFT]:
+            if keys[ob.pygame.K_LEFT] or keys[ob.pygame.K_a]:
                 self.player.x -= objectsSpeed*self.player.speedFactor
-            if keys[ob.pygame.K_RIGHT]:
+            if keys[ob.pygame.K_RIGHT] or keys[ob.pygame.K_d]:
                 self.player.x += objectsSpeed*self.player.speedFactor
 
+            self.__update_objects()
+            self.__handle_collisions()
 
-            self.player.update()
-
-            if self.enemy.update() and self.__check_game_over_conditions():
-                running = False
-            
-            self.__update_bullets()
-
-            self.__update_screen()
+            if self.__check_game_over_conditions():
+                self.__game_over()
+                # running = False
+            else:
+                self.__update_screen()
 
             ob.pygame.display.update()
+
+    def __update_objects(self):
+        self.player.update()
+        for enemy in self.enemys:
+            enemy.update()
+        bulletIndex = 0
+        while bulletIndex < len(self.bullets):
+            self.bullets[bulletIndex].update()
+            if self.bullets[bulletIndex].y <= 0:
+                del self.bullets[bulletIndex]
+            else:
+                bulletIndex += 1
+            #end if
+        #end while
+
+    def __handle_collisions(self):
+        enemyIndex = 0
+        while enemyIndex < len(self.enemys):
+            bulletIndex = 0
+            while bulletIndex < len(self.bullets):
+                if Game.__check_collision(self.bullets[bulletIndex], self.enemys[enemyIndex]):
+                    del self.bullets[bulletIndex]
+                    self.enemys[enemyIndex].reset()
+                    self.score += 1
+                else:
+                    bulletIndex += 1
+                #end if
+            #end while
+            enemyIndex += 1
 
     def __update_screen(self):
         self.screen.blit(self.backgroundImage, (0, 0))
         self.screen.blit(self.player.image, (self.player.x, self.player.y))
-        self.screen.blit(self.enemy.image, (self.enemy.x, self.enemy.y))
         for bullet in self.bullets:
             self.screen.blit(bullet.image, (bullet.x, bullet.y))
+        for enemy in self.enemys:
+            self.screen.blit(enemy.image, (enemy.x, enemy.y))
+
+        self.__show_score()
+
+    def __show_score(self):
+        scoreString = self.font.render(f"Score: {self.score}", True, (255, 255, 255))
+        self.screen.blit(scoreString, self.scorePosition)
 
     def __check_game_over_conditions(self) -> bool:
-        return self.enemy.y + self.enemy.imageHeight >= self.player.y
+        for enemy in self.enemys:
+            if enemy.y + enemy.imageHeight >= self.player.y:
+                return True
+            
+        return False
     
-    def __update_bullets(self):
-        i = 0
-        while i < len(self.bullets):
-            self.bullets[i].update()
-            if self.bullets[i].y <= 0:
-                del self.bullets[i]
-            elif Game.__check_collision(self.bullets[i], self.enemy):
-                del self.bullets[i]
-                self.enemy.y = 0
-            else:
-                i += 1
+    def __game_over(self):
+        gameOverFont = ob.pygame.font.Font("freesansbold.ttf", 64)
+        gameOverMessage = gameOverFont.render(f"GAME OVER", True, (255, 255, 255))
+        gameOverMessageRect = gameOverMessage.get_rect()
+        self.screen.blit(gameOverMessage, (self.screenWidth // 2 - gameOverMessageRect.width // 2, 
+                                           self.screenHeight // 2 - gameOverMessageRect.height // 2))
 
     @staticmethod
-    def __check_collision(bullet, enemy):
+    def __check_collision(bullet: Bullet, enemy: Enemy):
         if (enemy.y <= bullet.y <= enemy.y + enemy.imageHeight) or (bullet.y <= enemy.y <= bullet.y + bullet.imageHeight):
             if (enemy.x <= bullet.x <= enemy.x + enemy.imageWidth) or (bullet.x <= enemy.x <= bullet.x + bullet.imageWidth):
                 return True
