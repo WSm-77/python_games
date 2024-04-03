@@ -11,8 +11,6 @@ class Player(ob.Object):
         self.speedFactor = 1.2
 
     def update(self):
-        self.x += self.xSpeed * self.speedFactor
-        self.y += self.ySpeed * self.speedFactor
         if self.x <= 0:
             self.x = 0
         elif self.x >= self.screenWidth - self.imageWidth:

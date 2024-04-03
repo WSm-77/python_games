@@ -34,12 +34,14 @@ class Game:
         self.bullets = deque()
 
     def run(self):
-        # game loop
         ob.pygame.mixer.music.play(-1)
-        running = True
         objectsSpeed = 5
+
         self.player = Player(self.screenWidth, self.screenHeight)
         self.enemy = Enemy(self.screenWidth, self.screenHeight, objectsSpeed)
+
+        # game loop
+        running = True
         while running:
             for event in ob.pygame.event.get():
                 match event.type:
@@ -48,22 +50,22 @@ class Game:
 
                     case ob.pygame.KEYDOWN:
                         match event.key:
-                            case ob.pygame.K_a:
-                                self.player.xSpeed = -objectsSpeed
-                            case ob.pygame.K_d:
-                                self.player.xSpeed = objectsSpeed
                             case ob.pygame.K_SPACE:
                                 self.bullets.append(
                                     Bullet(self.player.x, self.player.y, objectsSpeed, self.screenWidth, self.screenHeight)
                                     )
                             case _:
                                 pass
-                    case ob.pygame.KEYUP:
-                        if event.key == ob.pygame.K_a or event.key == ob.pygame.K_d:
-                            self.player.xSpeed = 0
 
                     case _:
                         pass
+
+            keys = ob.pygame.key.get_pressed()
+            if keys[ob.pygame.K_LEFT]:
+                self.player.x -= objectsSpeed*self.player.speedFactor
+            if keys[ob.pygame.K_RIGHT]:
+                self.player.x += objectsSpeed*self.player.speedFactor
+
 
             self.player.update()
 
