@@ -9,6 +9,7 @@ class Player(ob.Object):
         super().__init__((screenWidth // 2) - (imageWidth // 2), screenHeight - imageHeight - 10, 0, 0, image, imageWidth, imageHeight,
                          screenWidth, screenHeight)
         
+        self.magazineCapacity = 1
         self.speedFactor = 1.2
 
     def update(self):

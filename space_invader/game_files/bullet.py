@@ -1,6 +1,7 @@
 import game_files.object as ob
 
 class Bullet(ob.Object):
+
     def __init__(self, spaceshipXpos, spaceShipYpos, objectSpeed, screenWidth, screenHeight) -> None:
         image = ob.pygame.image.load("./images/bullet.png")
         imageWidth = 10

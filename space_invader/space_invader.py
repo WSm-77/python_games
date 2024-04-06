@@ -1,4 +1,3 @@
-# import pygame
 import game_files.object as ob
 from game_files.player import Player
 from game_files.enemy import Enemy
@@ -27,8 +26,8 @@ class Game:
         # creating player
         self.player: Player = None
 
-        # creating enemys
-        self.enemys: list[Enemy] = []
+        # creating enemies
+        self.enemies: list[Enemy] = []
 
         # creating bullets queue
         self.bullets: deque[Bullet] = deque()
@@ -40,11 +39,13 @@ class Game:
 
     def run(self, numberOfEnemies = 6, playMusic = True):
         if playMusic:
+            ob.pygame.mixer.init()
+            ob.pygame.mixer.music.set_volume(0.5)
             ob.pygame.mixer.music.play(-1)
         objectsSpeed = 5
 
         self.player = Player(self.screenWidth, self.screenHeight)
-        self.enemys = [Enemy(self.screenWidth, self.screenHeight, objectsSpeed) for _ in range(numberOfEnemies)]
+        self.enemies = [Enemy(self.screenWidth, self.screenHeight, objectsSpeed) for _ in range(numberOfEnemies)]
 
 
         # game loop
@@ -58,9 +59,13 @@ class Game:
                     case ob.pygame.KEYDOWN:
                         match event.key:
                             case ob.pygame.K_SPACE:
-                                self.bullets.append(
-                                    Bullet(self.player.x, self.player.y, objectsSpeed, self.screenWidth, self.screenHeight)
-                                    )
+                                if len(self.bullets) < self.player.magazineCapacity:
+                                    self.bullets.append(
+                                        Bullet(self.player.x, self.player.y, objectsSpeed, self.screenWidth, self.screenHeight)
+                                        )
+                                    if playMusic:
+                                        shootSound = ob.pygame.mixer.Sound("./sounds/shoot.mp3")
+                                        shootSound.play()
                             case _:
                                 pass
 
@@ -87,7 +92,7 @@ class Game:
 
     def __update_objects(self):
         self.player.update()
-        for enemy in self.enemys:
+        for enemy in self.enemies:
             enemy.update()
         bulletIndex = 0
         while bulletIndex < len(self.bullets):
@@ -101,12 +106,12 @@ class Game:
 
     def __handle_collisions(self):
         enemyIndex = 0
-        while enemyIndex < len(self.enemys):
+        while enemyIndex < len(self.enemies):
             bulletIndex = 0
             while bulletIndex < len(self.bullets):
-                if Game.__check_collision(self.bullets[bulletIndex], self.enemys[enemyIndex]):
+                if Game.__check_collision(self.bullets[bulletIndex], self.enemies[enemyIndex]):
                     del self.bullets[bulletIndex]
-                    self.enemys[enemyIndex].reset()
+                    self.enemies[enemyIndex].reset()
                     self.score += 1
                 else:
                     bulletIndex += 1
@@ -119,7 +124,7 @@ class Game:
         self.screen.blit(self.player.image, (self.player.x, self.player.y))
         for bullet in self.bullets:
             self.screen.blit(bullet.image, (bullet.x, bullet.y))
-        for enemy in self.enemys:
+        for enemy in self.enemies:
             self.screen.blit(enemy.image, (enemy.x, enemy.y))
 
         self.__show_score()
@@ -129,7 +134,7 @@ class Game:
         self.screen.blit(scoreString, self.scorePosition)
 
     def __check_game_over_conditions(self) -> bool:
-        for enemy in self.enemys:
+        for enemy in self.enemies:
             if enemy.y + enemy.imageHeight >= self.player.y:
                 return True
             
