@@ -1,3 +1,4 @@
-space_invader/env
-space_invader/game_files/__pycache__
+*env
+*__pycache__
 space_invader/tmp
+*.txt
