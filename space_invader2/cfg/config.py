@@ -4,6 +4,9 @@ import os
 def get_image_path(*parts):
     return os.path.join("assets", "graphics", *parts)
 
+def get_font_path(*parts):
+    return os.path.join("assets", "font", *parts)
+
 WindowConfig = namedtuple("WindowConfig", [
     "TITLE", 
     "ICON_PATH", 
@@ -13,7 +16,14 @@ WindowConfig = namedtuple("WindowConfig", [
 ])
 
 GameConfig = namedtuple("GameConfig", [
-    "FPS"                      
+    "FPS",
+    "FONT"
+])
+
+PlayerConfig = namedtuple("PlayerConfig", [
+    "SHIP_IMAGE",
+    "LASER_IMAGE",
+    "VEL_PER_FRAME"
 ])
 
 WINDOW_CONFIG = WindowConfig(
@@ -25,5 +35,12 @@ WINDOW_CONFIG = WindowConfig(
 )
 
 GAME_CONFIG = GameConfig(
-    FPS = 60
+    FPS = 60,
+    FONT = get_font_path("go3v2.ttf")
+)
+
+PLAYER_CONFIG = PlayerConfig(
+    SHIP_IMAGE = get_image_path("items", "pixel_ship_yellow.png"),
+    LASER_IMAGE = get_image_path("items", "pixel_laser_yellow.png"),
+    VEL_PER_FRAME = 300 / GAME_CONFIG.FPS
 )

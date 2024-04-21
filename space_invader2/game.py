@@ -1,5 +1,6 @@
 import pygame
 import cfg.config as cfg
+import game_modes.modes as game_modes
 
 class Game:
     def __init__(self) -> None:
@@ -13,6 +14,8 @@ class Game:
         ) 
         self.clock = pygame.time.Clock()
 
+        # game
+        self.currentGame = None
         
     @staticmethod
     def init():
@@ -27,21 +30,7 @@ class Game:
     def main_menu(self):
         self.new_game()        # TODO
 
-    def update_game(self):
-        self.screen.blit(self.background, (0, 0))
-        pygame.display.update()
-
     def new_game(self):
-        running = True
-
-        while running:
-            self.clock.tick(cfg.GAME_CONFIG.FPS)
-
-            # events
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-
-            self.update_game()
-        #end while
-        
+        self.currentGame = game_modes.ClassicGame(self)
+        self.currentGame.start_game()
+        self.currentGame = None

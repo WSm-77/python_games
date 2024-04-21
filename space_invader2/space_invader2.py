@@ -1,3 +1,3 @@
 from game import Game
 
-game = Game().start()
+Game().start()
