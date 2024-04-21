@@ -20,6 +20,17 @@ class Player(Ship):
         if pressedKeys[pygame.K_s]:
             self.y += cfg.PLAYER_CONFIG.VEL_PER_FRAME
 
+        # check if player is out of bounds
+        if self.x + self.shipImage.get_width() > cfg.WINDOW_CONFIG.WIDTH:
+            self.x = cfg.WINDOW_CONFIG.WIDTH - self.shipImage.get_width()
+        elif self.x < 0:
+            self.x = 0
+        
+        if self.y + self.shipImage.get_height() > cfg.WINDOW_CONFIG.HEIGHT:
+            self.y = cfg.WINDOW_CONFIG.HEIGHT - self.shipImage.get_height()
+        elif self.y < 0:
+            self.y = 0
+
     def update(self, pressedKeys):
         self.move(pressedKeys)
         super().draw()
