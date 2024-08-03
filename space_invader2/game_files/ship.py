@@ -1,13 +1,28 @@
-class Ship:
-    def __init__(self, x, y, shipImage, laserImage, game) -> None:
-        self.x = x
-        self.y = y
-        self.shipImage = shipImage
-        self.laserImage = laserImage
-        self.game = game
+############################
+# external library imports #
+############################
 
-    def update(self):
+#########################
+# local library imports #
+#########################
+
+from game_files.activeObject import ActiveObject
+
+########
+# code #
+########
+
+class Ship(ActiveObject):
+    def __init__(self, x, y, shipImage, laserImage, game) -> None:
+        super().__init__(x, y, shipImage, game)
+        self.laserImage = laserImage
+
+    def move(self):
         pass
 
-    def draw(self):
-        self.game.screen.blit(self.shipImage, (self.x, self.y))
+    def shoot(self):
+        pass
+
+    def actions(self):
+        self.move()
+        self.shoot()
