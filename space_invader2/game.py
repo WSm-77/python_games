@@ -1,6 +1,19 @@
+############################
+# external library imports #
+############################
+
 import pygame
+
+#########################
+# local library imports #
+#########################
+
 import cfg.config as cfg
 import game_modes.modes as game_modes
+
+########
+# code #
+########
 
 class Game:
     def __init__(self) -> None:
@@ -11,12 +24,12 @@ class Game:
         self.screen = pygame.display.set_mode((cfg.WINDOW_CONFIG.WIDTH, cfg.WINDOW_CONFIG.HEIGHT))
         self.background = pygame.transform.scale(
             pygame.image.load(cfg.WINDOW_CONFIG.BACKGROUND_PATH), (cfg.WINDOW_CONFIG.WIDTH, cfg.WINDOW_CONFIG.HEIGHT)
-        ) 
+        )
         self.clock = pygame.time.Clock()
 
         # game
         self.currentGame = None
-        
+
     @staticmethod
     def init():
         pygame.init()

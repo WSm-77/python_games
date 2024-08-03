@@ -1,5 +1,17 @@
+############################
+# external library imports #
+############################
+
 from collections import namedtuple
 import os
+
+#########################
+# local library imports #
+#########################
+
+########
+# code #
+########
 
 def get_image_path(*parts):
     return os.path.join("assets", "graphics", *parts)
@@ -8,10 +20,10 @@ def get_font_path(*parts):
     return os.path.join("assets", "font", *parts)
 
 WindowConfig = namedtuple("WindowConfig", [
-    "TITLE", 
-    "ICON_PATH", 
-    "BACKGROUND_PATH", 
-    "WIDTH", 
+    "TITLE",
+    "ICON_PATH",
+    "BACKGROUND_PATH",
+    "WIDTH",
     "HEIGHT"
 ])
 

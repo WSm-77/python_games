@@ -1,6 +1,19 @@
+############################
+# external library imports #
+############################
+
+import pygame
+
+#########################
+# local library imports #
+#########################
+
 from game_files.ship import Ship
 import cfg.config as cfg
-import pygame
+
+########
+# code #
+########
 
 class Player(Ship):
     def __init__(self, game) -> None:
@@ -25,7 +38,7 @@ class Player(Ship):
             self.x = cfg.WINDOW_CONFIG.WIDTH - self.shipImage.get_width()
         elif self.x < 0:
             self.x = 0
-        
+
         if self.y + self.shipImage.get_height() > cfg.WINDOW_CONFIG.HEIGHT:
             self.y = cfg.WINDOW_CONFIG.HEIGHT - self.shipImage.get_height()
         elif self.y < 0:

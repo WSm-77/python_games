@@ -1,7 +1,19 @@
+############################
+# external library imports #
+############################
+
+import pygame
+
+#########################
+# local library imports #
+#########################
+
 import game_modes
 import cfg.config as cfg
-# from  game_files.player import Player
-import pygame
+
+########
+# code #
+########
 
 class ClassicGame(game_modes.GameMode):
     def __init__(self, game) -> None:
