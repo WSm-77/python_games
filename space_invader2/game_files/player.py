@@ -9,6 +9,7 @@ import pygame
 #########################
 
 from game_files.ship import Ship
+from game_files.laser import Laser
 import cfg.config as cfg
 
 ########
@@ -22,6 +23,8 @@ class Player(Ship):
         x = cfg.WINDOW_CONFIG.WIDTH // 2 - shipImage.get_width() // 2
         y = cfg.WINDOW_CONFIG.HEIGHT - shipImage.get_height() - 10
         super().__init__(x, y, shipImage, laserImage, game)
+
+        self.shootCooldown = 0
 
     def move(self):
         pressedKeys = pygame.key.get_pressed()
@@ -45,3 +48,14 @@ class Player(Ship):
             self.y = cfg.WINDOW_CONFIG.HEIGHT - self.get_height()
         elif self.y < 0:
             self.y = 0
+
+    def shoot(self):
+        if self.shootCooldown == 0:
+            pressedKeys = pygame.key.get_pressed()
+
+            if pressedKeys[pygame.K_SPACE]:
+                newLaser = Laser(self.x, self.y, self.get_width(), self.get_height(), self.laserImage, self.game, True)
+                Player.bullets.append(newLaser)
+                self.shootCooldown = cfg.PLAYER_CONFIG.SHOOT_COOLDOWN
+        else:
+            self.shootCooldown -= 1

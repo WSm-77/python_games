@@ -36,11 +36,12 @@ PlayerConfig = namedtuple("PlayerConfig", [
     "SHIP_IMAGE",
     "LASER_IMAGE",
     "VEL_PER_FRAME",
-    "SHOOT_DELAY"
+    "SHOOT_COOLDOWN"
 ])
 
 LaserConfig = namedtuple("LaserConfig", [
-    "VEL_PER_FRAME"
+    "VEL_PER_FRAME",
+    "SPAWN_SPAN"
 ])
 
 WINDOW_CONFIG = WindowConfig(
@@ -60,9 +61,10 @@ PLAYER_CONFIG = PlayerConfig(
     SHIP_IMAGE = get_image_path("items", "pixel_ship_yellow.png"),
     LASER_IMAGE = get_image_path("items", "pixel_laser_yellow.png"),
     VEL_PER_FRAME = 300 / GAME_CONFIG.FPS,
-    SHOOT_DELAY = GAME_CONFIG.FPS // 2
+    SHOOT_COOLDOWN = GAME_CONFIG.FPS // 2
 )
 
 LASER_CONFIG = LaserConfig(
-    VEL_PER_FRAME = 500 / GAME_CONFIG.FPS
+    VEL_PER_FRAME = 500 / GAME_CONFIG.FPS,
+    SPAWN_SPAN = -50
 )

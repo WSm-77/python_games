@@ -18,8 +18,16 @@ class ClassicGame(game_modes.GameMode):
     def __init__(self, game) -> None:
         super().__init__(game)
 
+    def update_active_objects(self):
+        # player
+        self.player.update()
+
+        # bullets
+        for bullet in self.player.bullets:
+            bullet.update()
+
     def update_game(self):
         self.handle_events()
         self.game.screen.blit(self.game.background, (0, 0))
-        self.player.update()
+        self.update_active_objects()
         pygame.display.update()
