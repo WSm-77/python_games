@@ -39,6 +39,19 @@ PlayerConfig = namedtuple("PlayerConfig", [
     "SHOOT_COOLDOWN"
 ])
 
+EnemyConfig = namedtuple("EnemyConfig", [
+    "RED",
+    "GREEN",
+    "BLUE",
+    "VEL_PER_FRAME",
+    "SHOOTING_CHANCE"
+])
+
+EnemyImages = namedtuple("EnemyImages", [
+    "SHIP_IMAGE",
+    "LASER_IMAGE"
+])
+
 LaserConfig = namedtuple("LaserConfig", [
     "VEL_PER_FRAME",
     "SPAWN_SPAN"
@@ -62,6 +75,23 @@ PLAYER_CONFIG = PlayerConfig(
     LASER_IMAGE = get_image_path("items", "pixel_laser_yellow.png"),
     VEL_PER_FRAME = 300 / GAME_CONFIG.FPS,
     SHOOT_COOLDOWN = GAME_CONFIG.FPS // 2
+)
+
+ENEMY_CONFIG = EnemyConfig(
+    RED = EnemyImages(
+        SHIP_IMAGE = get_image_path("items", "pixel_ship_red_small.png"),
+        LASER_IMAGE = get_image_path("items", "pixel_laser_red.png")
+    ),
+    GREEN = EnemyImages(
+        SHIP_IMAGE = get_image_path("items", "pixel_ship_green_small.png"),
+        LASER_IMAGE = get_image_path("items", "pixel_laser_green.png")
+    ),
+    BLUE = EnemyImages(
+        SHIP_IMAGE = get_image_path("items", "pixel_ship_blue_small.png"),
+        LASER_IMAGE = get_image_path("items", "pixel_laser_blue.png")
+    ),
+    VEL_PER_FRAME = 200 / GAME_CONFIG.FPS,
+    SHOOTING_CHANCE = GAME_CONFIG.FPS * 3
 )
 
 LASER_CONFIG = LaserConfig(

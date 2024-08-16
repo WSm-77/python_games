@@ -17,6 +17,7 @@ import game_modes
 class ClassicGame(game_modes.GameMode):
     def __init__(self, game) -> None:
         super().__init__(game)
+        self.enemies = []
 
     def update_active_objects(self):
         # player
