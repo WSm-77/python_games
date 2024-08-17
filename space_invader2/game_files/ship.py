@@ -13,8 +13,6 @@ from game_files.activeObject import ActiveObject
 ########
 
 class Ship(ActiveObject):
-    bullets = []
-
     def __init__(self, x, y, shipImage, laserImage, game) -> None:
         super().__init__(x, y, shipImage, game)
         self.laserImage = laserImage

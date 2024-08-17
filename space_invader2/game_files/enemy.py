@@ -16,6 +16,7 @@ import cfg.config as cfg
 ########
 
 class Enemy(Ship):
+    bullets = []
     def __init__(self, x, y, shipImage, laserImage, game) -> None:
         super().__init__(x, y, shipImage, laserImage, game)
 

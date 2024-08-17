@@ -17,6 +17,7 @@ import cfg.config as cfg
 ########
 
 class Player(Ship):
+    bullets = []
     def __init__(self, game) -> None:
         shipImage = pygame.image.load(cfg.PLAYER_CONFIG.SHIP_IMAGE)
         laserImage = pygame.image.load(cfg.PLAYER_CONFIG.LASER_IMAGE)

@@ -20,12 +20,15 @@ class EnemyWave:
     def __init__(self, game) -> None:
         self.game = game
         self.enemies = []
-        self.waveNb = 1
+        self.waveNb = 0
         self.generateOrder = [cfg.ENEMY_CONFIG.RED, cfg.ENEMY_CONFIG.GREEN, cfg.ENEMY_CONFIG.BLUE]
         self.generateIdx = 0
 
     def generate_new_wave(self):
-        nbOfEnemiesInWave = cfg.ENEMY_WAVE_CONFIG.NUMBER_OF_ENEMIES_IN_FIRST_WAVE + self.waveNb - 1
+        # update wave number
+        self.waveNb += 1
+
+        nbOfEnemiesInWave = cfg.ENEMY_WAVE_CONFIG.NUMBER_OF_ENEMIES_IN_FIRST_WAVE + self.waveNb
         for _ in range(nbOfEnemiesInWave):
             # prepare enemy
             shipImage = pygame.image.load(self.generateOrder[self.generateIdx].SHIP_IMAGE)
@@ -43,11 +46,26 @@ class EnemyWave:
             self.generateIdx = (self.generateIdx + 1) % 3
 
     def update_enemies(self):
+        # enemies
         for enemy in self.enemies:
             enemy.update()
 
-    def update(self):
-        if len(self.enemies) == 0:
-            self.generate_new_wave()
-        else:
-            self.update_enemies()
+        # enemies' bullets
+        for bullet in Enemy.bullets:
+            bullet.update()
+
+    def wave_beginning(self):
+        self.generate_new_wave()
+
+    def wave_end(self):
+        print("awsome!!!")
+        self.wave_beginning()
+
+    def check_wave_end_condition(self):
+        return len(self.enemies) == 0
+
+    # def update(self):
+    #     if len(self.enemies) == 0:
+    #         self.generate_new_wave()
+    #     else:
+    #         self.update_enemies()
