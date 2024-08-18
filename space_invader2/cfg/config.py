@@ -82,6 +82,12 @@ LaserConfig = namedtuple("LaserConfig", [
     "BASE_DAMAGE"
 ])
 
+GameOverConfig = namedtuple("GameOverConfig", [
+    "FONT_SIZE",
+    "TEXT",
+    "FREEZE_TIME"
+])
+
 ########################
 # config specyfication #
 ########################
@@ -141,4 +147,10 @@ LASER_CONFIG = LaserConfig(
     VEL_PER_FRAME = 500 / GAME_CONFIG.FPS,
     SPAWN_SPAN = -50,
     BASE_DAMAGE = 1
+)
+
+GAME_OVER_CONFIG = GameOverConfig(
+    FONT_SIZE = 64,
+    TEXT = "GAME OVER!!!",
+    FREEZE_TIME = GAME_CONFIG.FPS * 3
 )
