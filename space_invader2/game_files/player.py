@@ -23,7 +23,8 @@ class Player(Ship):
         laserImage = pygame.image.load(cfg.PLAYER_CONFIG.LASER_IMAGE)
         x = cfg.WINDOW_CONFIG.WIDTH // 2 - shipImage.get_width() // 2
         y = cfg.WINDOW_CONFIG.HEIGHT - shipImage.get_height() - 10
-        super().__init__(x, y, shipImage, laserImage, game)
+        hp = cfg.PLAYER_CONFIG.DEFAULT_HP
+        super().__init__(x, y, shipImage, laserImage, game, hp)
 
         self.shootCooldown = 0
 

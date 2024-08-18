@@ -18,7 +18,8 @@ import cfg.config as cfg
 class Enemy(Ship):
     bullets = []
     def __init__(self, x, y, shipImage, laserImage, game) -> None:
-        super().__init__(x, y, shipImage, laserImage, game)
+        hp = cfg.ENEMY_CONFIG.DEFAULT_HP
+        super().__init__(x, y, shipImage, laserImage, game, hp)
 
     def move(self):
         self.y += cfg.ENEMY_CONFIG.VEL_PER_FRAME

@@ -25,6 +25,7 @@ class Laser(ActiveObject):
         super().__init__(x, y, image, game)
 
         self.isShootByPlayer = isShootByPlayer
+        self.damage = cfg.LASER_CONFIG.BASE_DAMAGE
 
     def move(self):
         if self.isShootByPlayer:

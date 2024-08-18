@@ -45,7 +45,8 @@ PlayerConfig = namedtuple("PlayerConfig", [
     "SHIP_IMAGE",
     "LASER_IMAGE",
     "VEL_PER_FRAME",
-    "SHOOT_COOLDOWN"
+    "SHOOT_COOLDOWN",
+    "DEFAULT_HP"
 ])
 
 EnemyConfig = namedtuple("EnemyConfig", [
@@ -53,7 +54,8 @@ EnemyConfig = namedtuple("EnemyConfig", [
     "GREEN",
     "BLUE",
     "VEL_PER_FRAME",
-    "SHOOTING_CHANCE"
+    "SHOOTING_CHANCE",
+    "DEFAULT_HP"
 ])
 
 EnemyImages = namedtuple("EnemyImages", [
@@ -76,7 +78,8 @@ Area = namedtuple("Area", [
 
 LaserConfig = namedtuple("LaserConfig", [
     "VEL_PER_FRAME",
-    "SPAWN_SPAN"
+    "SPAWN_SPAN",
+    "BASE_DAMAGE"
 ])
 
 ########################
@@ -101,7 +104,8 @@ PLAYER_CONFIG = PlayerConfig(
     SHIP_IMAGE = get_image_path("items", "pixel_ship_yellow.png"),
     LASER_IMAGE = get_image_path("items", "pixel_laser_yellow.png"),
     VEL_PER_FRAME = 300 / GAME_CONFIG.FPS,
-    SHOOT_COOLDOWN = GAME_CONFIG.FPS // 2
+    SHOOT_COOLDOWN = GAME_CONFIG.FPS // 2,
+    DEFAULT_HP = 5
 )
 
 ENEMY_CONFIG = EnemyConfig(
@@ -118,7 +122,8 @@ ENEMY_CONFIG = EnemyConfig(
         LASER_IMAGE = get_image_path("items", "pixel_laser_blue.png")
     ),
     VEL_PER_FRAME = 100 / GAME_CONFIG.FPS,
-    SHOOTING_CHANCE = GAME_CONFIG.FPS * 3
+    SHOOTING_CHANCE = GAME_CONFIG.FPS * 3,
+    DEFAULT_HP = 1
 )
 
 ENEMY_WAVE_CONFIG = EnemyWaveConfig(
@@ -134,5 +139,6 @@ ENEMY_WAVE_CONFIG = EnemyWaveConfig(
 
 LASER_CONFIG = LaserConfig(
     VEL_PER_FRAME = 500 / GAME_CONFIG.FPS,
-    SPAWN_SPAN = -50
+    SPAWN_SPAN = -50,
+    BASE_DAMAGE = 1
 )

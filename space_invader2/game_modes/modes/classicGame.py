@@ -21,6 +21,7 @@ class ClassicGame(game_modes.GameMode):
     def __init__(self, game) -> None:
         super().__init__(game)
         self.enemyWave = EnemyWave(game)
+        self.score = 0
 
     def check_pixel_perfect_colision(self, obj1, obj2):
         offsetX = obj2.x - obj1.x
@@ -30,6 +31,7 @@ class ClassicGame(game_modes.GameMode):
     def collision_enemy_arena_bottom(self):
         for enemy in self.enemyWave.enemies[:]:
             if enemy.y + enemy.get_height() > cfg.WINDOW_CONFIG.HEIGHT:
+                self.player.hit(enemy.hp)
                 self.enemyWave.enemies.remove(enemy)
 
     def collision_player_with_enemies(self):
@@ -38,7 +40,9 @@ class ClassicGame(game_modes.GameMode):
                 continue
 
             if self.check_pixel_perfect_colision(self.player, enemy):
+                self.player.hit(enemy.hp)
                 self.enemyWave.enemies.remove(enemy)
+                self.score += 1
 
     def collision_player_bullets_with_enemies(self):
         # player bullets with enemies
@@ -49,8 +53,11 @@ class ClassicGame(game_modes.GameMode):
                     continue
 
                 if self.check_pixel_perfect_colision(playerBullet, enemy):
+                    enemy.hit(playerBullet.damage)
                     self.player.bullets.remove(playerBullet)
-                    self.enemyWave.enemies.remove(enemy)
+                    if enemy.is_destroyed():
+                        self.enemyWave.enemies.remove(enemy)
+                        self.score += 1
 
     def collision_player_with_enemies_bullets(self):
         for enemyBullet in Enemy.bullets[:]:
@@ -58,6 +65,7 @@ class ClassicGame(game_modes.GameMode):
                 continue
 
             if self.check_pixel_perfect_colision(self.player, enemyBullet):
+                self.player.hit(enemyBullet.damage)
                 Enemy.bullets.remove(enemyBullet)
 
     def handle_collisions(self):
@@ -83,6 +91,8 @@ class ClassicGame(game_modes.GameMode):
         self.enemyWave.update()
         if not self.enemyWave.is_wave_freezed():
             self.handle_collisions()
+        if self.player.is_destroyed():
+            self.running = False
         pygame.display.update()
 
     def start_game(self):
