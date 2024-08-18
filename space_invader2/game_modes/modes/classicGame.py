@@ -11,6 +11,7 @@ import pygame
 from game_files.enemy import Enemy
 from game_files.enemyWave import EnemyWave
 import game_modes
+import cfg.config as cfg
 
 ########
 # code #
@@ -20,26 +21,50 @@ class ClassicGame(game_modes.GameMode):
     def __init__(self, game) -> None:
         super().__init__(game)
         self.enemyWave = EnemyWave(game)
-        self.cnt = 0
 
-    def handle_collisions(self):
+    def check_pixel_perfect_colision(self, obj1, obj2):
+        offsetX = obj2.x - obj1.x
+        offsetY = obj2.y - obj1.y
+        return obj1.mask.overlap(obj2.mask, (offsetX, offsetY))
+
+    def collision_enemy_arena_bottom(self):
+        for enemy in self.enemyWave.enemies[:]:
+            if enemy.y + enemy.get_height() > cfg.WINDOW_CONFIG.HEIGHT:
+                self.enemyWave.enemies.remove(enemy)
+
+    def collision_player_with_enemies(self):
+        for enemy in self.enemyWave.enemies[:]:
+            if not self.player.rect.colliderect(enemy.rect):
+                continue
+
+            if self.check_pixel_perfect_colision(self.player, enemy):
+                self.enemyWave.enemies.remove(enemy)
+
+    def collision_player_bullets_with_enemies(self):
         # player bullets with enemies
         for playerBullet in self.player.bullets[:]:
-            bulletRect = pygame.Rect(playerBullet.x, playerBullet.y, playerBullet.get_width(), playerBullet.get_height())
-
             for enemy in self.enemyWave.enemies[:]:
-                enemyRect = pygame.Rect(enemy.x, enemy.y, enemy.get_width(), enemy.get_height())
-
                 # fast rect check for performance optymalization
-                if not bulletRect.colliderect(enemyRect):
-                    self.cnt += 1
-                    # continue
+                if not playerBullet.rect.colliderect(enemy.rect):
+                    continue
 
-                offsetX = enemy.x - playerBullet.x
-                offsetY = enemy.y - playerBullet.y
-                if playerBullet.mask.overlap(enemy.mask, (offsetX, offsetY)):
+                if self.check_pixel_perfect_colision(playerBullet, enemy):
                     self.player.bullets.remove(playerBullet)
                     self.enemyWave.enemies.remove(enemy)
+
+    def collision_player_with_enemies_bullets(self):
+        for enemyBullet in Enemy.bullets[:]:
+            if not self.player.rect.colliderect(enemyBullet.rect):
+                continue
+
+            if self.check_pixel_perfect_colision(self.player, enemyBullet):
+                Enemy.bullets.remove(enemyBullet)
+
+    def handle_collisions(self):
+        self.collision_enemy_arena_bottom()
+        self.collision_player_with_enemies()
+        self.collision_player_bullets_with_enemies()
+        self.collision_player_with_enemies_bullets()
 
     def update_player(self):
         # player

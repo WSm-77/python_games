@@ -34,3 +34,4 @@ class Laser(ActiveObject):
 
     def actions(self):
         self.move()
+        super().actions()

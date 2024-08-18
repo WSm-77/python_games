@@ -17,8 +17,12 @@ class ActiveObject:
         self.x = x
         self.y = y
         self.image = image
+        self.rect = image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
         self.game = game
+
+    def update_rect(self):
+        self.rect.topleft = (self.x, self.y)
 
     def get_width(self):
         return self.image.get_width()
@@ -28,7 +32,7 @@ class ActiveObject:
 
     # this method should be overwritten in derived class
     def actions(self):
-        pass
+        self.update_rect()
 
     def draw(self):
         self.game.screen.blit(self.image, (self.x, self.y))

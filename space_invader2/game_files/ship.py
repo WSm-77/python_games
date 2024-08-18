@@ -26,3 +26,4 @@ class Ship(ActiveObject):
     def actions(self):
         self.move()
         self.shoot()
+        super().actions()
