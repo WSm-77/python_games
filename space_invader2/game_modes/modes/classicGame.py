@@ -40,27 +40,25 @@ class ClassicGame(game_modes.GameMode):
                 if playerBullet.mask.overlap(enemy.mask, (offsetX, offsetY)):
                     self.player.bullets.remove(playerBullet)
                     self.enemyWave.enemies.remove(enemy)
-                    return
 
     def update_player(self):
         # player
         self.player.update()
 
         # player's bullets
-        for bullet in self.player.bullets:
+        for bullet in self.player.bullets[:]:
             bullet.update()
+            if bullet.y + bullet.get_height() < 0:
+                self.player.bullets.remove(bullet)
 
     def update_game(self):
         self.handle_events()
         self.game.screen.blit(self.game.background, (0, 0))
         self.update_player()
-        if self.enemyWave.check_wave_end_condition():
-            self.enemyWave.wave_end()
-        else:
-            self.enemyWave.update_enemies()
+        self.enemyWave.update()
+        if not self.enemyWave.is_wave_freezed():
             self.handle_collisions()
         pygame.display.update()
 
     def start_game(self):
-        self.enemyWave.wave_beginning()
         super().start_game()

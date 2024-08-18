@@ -37,7 +37,8 @@ WindowConfig = namedtuple("WindowConfig", [
 
 GameConfig = namedtuple("GameConfig", [
     "FPS",
-    "FONT"
+    "FONT",
+    "FONT_SIZE"
 ])
 
 PlayerConfig = namedtuple("PlayerConfig", [
@@ -62,7 +63,10 @@ EnemyImages = namedtuple("EnemyImages", [
 
 EnemyWaveConfig = namedtuple("EnemyWaveConfig", [
     "NUMBER_OF_ENEMIES_IN_FIRST_WAVE",
-    "SPWAN_AREA"
+    "SPWAN_AREA",
+    "WAVE_END_FREEZE_TIME",
+    "WAVE_START_FREEZE_TIME",
+    "WAVE_END_TEXT_LIST"
 ])
 
 Area = namedtuple("Area", [
@@ -89,7 +93,8 @@ WINDOW_CONFIG = WindowConfig(
 
 GAME_CONFIG = GameConfig(
     FPS = 60,
-    FONT = get_font_path("go3v2.ttf")
+    FONT = get_font_path("go3v2.ttf"),
+    FONT_SIZE = 32
 )
 
 PLAYER_CONFIG = PlayerConfig(
@@ -121,7 +126,10 @@ ENEMY_WAVE_CONFIG = EnemyWaveConfig(
     SPWAN_AREA = Area(
         WIDTH = WINDOW_CONFIG.WIDTH,
         HEIGHT = WINDOW_CONFIG.HEIGHT * 2
-    )
+    ),
+    WAVE_END_FREEZE_TIME = GAME_CONFIG.FPS * 2,
+    WAVE_START_FREEZE_TIME = GAME_CONFIG.FPS * 2,
+    WAVE_END_TEXT_LIST = ["AWSOME!!!", "GREAT JOB!!!", "WELL DONE!!!"]
 )
 
 LASER_CONFIG = LaserConfig(

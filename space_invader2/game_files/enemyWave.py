@@ -18,11 +18,20 @@ import cfg.config as cfg
 
 class EnemyWave:
     def __init__(self, game) -> None:
+        # base config
         self.game = game
         self.enemies = []
         self.waveNb = 0
         self.generateOrder = [cfg.ENEMY_CONFIG.RED, cfg.ENEMY_CONFIG.GREEN, cfg.ENEMY_CONFIG.BLUE]
         self.generateIdx = 0
+
+        # wave state
+        self.freezeTimer = 0
+        self.waveStarted = False
+
+        # font config
+        self.waveFont = None
+        self.waveFontRect = None
 
     def generate_new_wave(self):
         # update wave number
@@ -50,22 +59,58 @@ class EnemyWave:
         for enemy in self.enemies:
             enemy.update()
 
+    def update_enemies_bullets(self):
         # enemies' bullets
-        for bullet in Enemy.bullets:
+        for bullet in Enemy.bullets[:]:
             bullet.update()
+            if bullet.y > cfg.WINDOW_CONFIG.HEIGHT:
+                Enemy.bullets.remove(bullet)
 
-    def wave_beginning(self):
+    def wave_start(self):
+        # generate new wave
         self.generate_new_wave()
 
+        # prepare text
+        self.waveFont = self.game.font.render(f"WAVE {self.waveNb}", True, (255, 255, 255))
+        self.waveFontRect = self.waveFont.get_rect()
+        self.waveFontRect.center = (cfg.WINDOW_CONFIG.WIDTH // 2, cfg.WINDOW_CONFIG.HEIGHT // 2)
+
+        # update wave state
+        self.freezeTimer = cfg.ENEMY_WAVE_CONFIG.WAVE_START_FREEZE_TIME
+        self.waveStarted = True
+
     def wave_end(self):
-        print("awsome!!!")
-        self.wave_beginning()
+        # prepare text
+        endTextOptions = len(cfg.ENEMY_WAVE_CONFIG.WAVE_END_TEXT_LIST)
+        endText = cfg.ENEMY_WAVE_CONFIG.WAVE_END_TEXT_LIST[randint(0, endTextOptions - 1)]
+        self.waveFont = self.game.font.render(endText, True, (255, 255, 255))
+        self.waveFontRect = self.waveFont.get_rect()
+        self.waveFontRect.center = (cfg.WINDOW_CONFIG.WIDTH // 2, cfg.WINDOW_CONFIG.HEIGHT // 2)
+
+        # update wave state
+        self.freezeTimer = cfg.ENEMY_WAVE_CONFIG.WAVE_END_FREEZE_TIME
+        self.waveStarted = False
+
+    def is_wave_freezed(self):
+        return self.freezeTimer > 0
+
+    def check_wave_start_condition(self):
+        return len(self.enemies) == 0 and not self.waveStarted
 
     def check_wave_end_condition(self):
-        return len(self.enemies) == 0
+        return len(self.enemies) == 0 and self.waveStarted
 
-    # def update(self):
-    #     if len(self.enemies) == 0:
-    #         self.generate_new_wave()
-    #     else:
-    #         self.update_enemies()
+    def print_text(self):
+        self.game.screen.blit(self.waveFont, self.waveFontRect)
+
+    def update(self):
+        if self.is_wave_freezed():
+            self.freezeTimer -= 1
+            self.print_text()
+        elif self.check_wave_start_condition():
+            self.wave_start()
+        elif self.check_wave_end_condition():
+            self.wave_end()
+        else:
+            self.update_enemies()
+            self.update_enemies_bullets()

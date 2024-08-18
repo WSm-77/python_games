@@ -27,6 +27,9 @@ class Game:
         )
         self.clock = pygame.time.Clock()
 
+        # font
+        self.font = pygame.font.Font(cfg.GAME_CONFIG.FONT, cfg.GAME_CONFIG.FONT_SIZE)
+
         # game
         self.currentGame = None
 
