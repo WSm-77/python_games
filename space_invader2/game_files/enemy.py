@@ -19,7 +19,7 @@ class Enemy(Ship):
     bullets = []
     def __init__(self, x, y, shipImage, laserImage, game) -> None:
         hp = cfg.ENEMY_CONFIG.DEFAULT_HP
-        super().__init__(x, y, shipImage, laserImage, game, hp)
+        super().__init__(x, y, shipImage, laserImage, game, hp, cfg.ENEMY_CONFIG.SHOW_HEALTHBAR)
 
     def move(self):
         self.y += cfg.ENEMY_CONFIG.VEL_PER_FRAME

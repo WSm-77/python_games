@@ -31,7 +31,7 @@ class ClassicGame(game_modes.GameMode):
     def collision_enemy_arena_bottom(self):
         for enemy in self.enemyWave.enemies[:]:
             if enemy.y + enemy.get_height() > cfg.WINDOW_CONFIG.HEIGHT:
-                self.player.hit(enemy.hp)
+                self.player.hit(enemy.hp())
                 self.enemyWave.enemies.remove(enemy)
 
     def collision_player_with_enemies(self):
@@ -40,7 +40,7 @@ class ClassicGame(game_modes.GameMode):
                 continue
 
             if self.check_pixel_perfect_colision(self.player, enemy):
-                self.player.hit(enemy.hp)
+                self.player.hit(enemy.hp())
                 self.enemyWave.enemies.remove(enemy)
                 self.score += 1
 

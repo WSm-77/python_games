@@ -7,22 +7,26 @@
 #########################
 
 from game_files.activeObject import ActiveObject
+from game_files.healthBar import HealthBar
 
 ########
 # code #
 ########
 
 class Ship(ActiveObject):
-    def __init__(self, x, y, shipImage, laserImage, game, hp) -> None:
+    def __init__(self, x, y, shipImage, laserImage, game, hp, showHealthBar) -> None:
         super().__init__(x, y, shipImage, game)
         self.laserImage = laserImage
-        self.hp = hp
+        self.healthBar = HealthBar(hp, self, game, showHealthBar)
+
+    def hp(self):
+        return self.healthBar.currentHp
 
     def is_destroyed(self):
-        return self.hp <= 0
+        return self.hp() <= 0
 
     def hit(self, damage):
-        self.hp -= damage
+        self.healthBar.loose_hp(damage)
 
     def move(self):
         pass
@@ -32,5 +36,6 @@ class Ship(ActiveObject):
 
     def actions(self):
         self.move()
+        self.healthBar.update()
         self.shoot()
         super().actions()

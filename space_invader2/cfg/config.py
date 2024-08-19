@@ -46,7 +46,8 @@ PlayerConfig = namedtuple("PlayerConfig", [
     "LASER_IMAGE",
     "VEL_PER_FRAME",
     "SHOOT_COOLDOWN",
-    "DEFAULT_HP"
+    "DEFAULT_HP",
+    "SHOW_HEALTHBAR"
 ])
 
 EnemyConfig = namedtuple("EnemyConfig", [
@@ -55,7 +56,8 @@ EnemyConfig = namedtuple("EnemyConfig", [
     "BLUE",
     "VEL_PER_FRAME",
     "SHOOTING_CHANCE",
-    "DEFAULT_HP"
+    "DEFAULT_HP",
+    "SHOW_HEALTHBAR"
 ])
 
 EnemyImages = namedtuple("EnemyImages", [
@@ -82,6 +84,13 @@ LaserConfig = namedtuple("LaserConfig", [
     "BASE_DAMAGE"
 ])
 
+HealthBarConfig = namedtuple("healthBarConfig", [
+    "HEIGHT",
+    "TOTAL_HP_BAR_COLOR",
+    "CURRENT_HP_BAR_COLOR",
+    "DISTANCE_FROM_BOTTOM_EDGE"
+])
+
 ########################
 # config specyfication #
 ########################
@@ -105,7 +114,8 @@ PLAYER_CONFIG = PlayerConfig(
     LASER_IMAGE = get_image_path("items", "pixel_laser_yellow.png"),
     VEL_PER_FRAME = 300 / GAME_CONFIG.FPS,
     SHOOT_COOLDOWN = GAME_CONFIG.FPS // 2,
-    DEFAULT_HP = 5
+    DEFAULT_HP = 5,
+    SHOW_HEALTHBAR = True
 )
 
 ENEMY_CONFIG = EnemyConfig(
@@ -123,7 +133,8 @@ ENEMY_CONFIG = EnemyConfig(
     ),
     VEL_PER_FRAME = 100 / GAME_CONFIG.FPS,
     SHOOTING_CHANCE = GAME_CONFIG.FPS * 3,
-    DEFAULT_HP = 1
+    DEFAULT_HP = 1,
+    SHOW_HEALTHBAR = True
 )
 
 ENEMY_WAVE_CONFIG = EnemyWaveConfig(
@@ -141,4 +152,11 @@ LASER_CONFIG = LaserConfig(
     VEL_PER_FRAME = 500 / GAME_CONFIG.FPS,
     SPAWN_SPAN = -50,
     BASE_DAMAGE = 1
+)
+
+HEALTH_BAR_CONFIG = HealthBarConfig(
+    HEIGHT = 15,
+    TOTAL_HP_BAR_COLOR = (240, 15, 15),
+    CURRENT_HP_BAR_COLOR = (15, 240, 15),
+    DISTANCE_FROM_BOTTOM_EDGE = 10
 )
