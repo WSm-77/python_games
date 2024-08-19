@@ -91,6 +91,12 @@ HealthBarConfig = namedtuple("healthBarConfig", [
     "DISTANCE_FROM_BOTTOM_EDGE"
 ])
 
+GameOverConfig = namedtuple("GameOverConfig", [
+    "FONT_SIZE",
+    "TEXT",
+    "FREEZE_TIME"
+])
+
 ########################
 # config specyfication #
 ########################
@@ -159,4 +165,10 @@ HEALTH_BAR_CONFIG = HealthBarConfig(
     TOTAL_HP_BAR_COLOR = (240, 15, 15),
     CURRENT_HP_BAR_COLOR = (15, 240, 15),
     DISTANCE_FROM_BOTTOM_EDGE = 10
+)
+
+GAME_OVER_CONFIG = GameOverConfig(
+    FONT_SIZE = 64,
+    TEXT = "GAME OVER!!!",
+    FREEZE_TIME = GAME_CONFIG.FPS * 3
 )

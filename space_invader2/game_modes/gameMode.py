@@ -3,6 +3,7 @@
 ############################
 
 import pygame
+import sys
 
 #########################
 # local library imports #
@@ -32,6 +33,19 @@ class GameMode:
             self.update_game()
         #end while
 
+        self.game_over()
+
+    def game_over(self):
+        gameOverText = self.game.font.render(cfg.GAME_OVER_CONFIG.TEXT, cfg.GAME_OVER_CONFIG.FONT_SIZE, (255, 255, 255))
+        gameOverTextRect = gameOverText.get_rect()
+        gameOverTextRect.center = (cfg.WINDOW_CONFIG.WIDTH // 2, cfg.WINDOW_CONFIG.HEIGHT // 2)
+        for _ in range(cfg.GAME_OVER_CONFIG.FREEZE_TIME):
+            self.handle_events()
+            self.game.clock.tick(cfg.GAME_CONFIG.FPS)
+            self.game.screen.blit(gameOverText, gameOverTextRect)
+            pygame.display.update()
+
+    # this method should be overwritten in derived class
     def update_game(self):
         pass
 
@@ -39,3 +53,5 @@ class GameMode:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+                pygame.quit()
+                sys.exit()
