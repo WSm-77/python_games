@@ -34,6 +34,10 @@ class Ship(ActiveObject):
     def shoot(self):
         pass
 
+    def draw(self):
+        super().draw()
+        self.healthBar.draw()
+
     def actions(self):
         self.move()
         self.healthBar.update()

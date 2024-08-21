@@ -34,9 +34,6 @@ class EnemyWave:
         self.waveFontRect = None
 
     def generate_new_wave(self):
-        # update wave number
-        self.waveNb += 1
-
         nbOfEnemiesInWave = cfg.ENEMY_WAVE_CONFIG.NUMBER_OF_ENEMIES_IN_FIRST_WAVE + self.waveNb
         for _ in range(nbOfEnemiesInWave):
             # prepare enemy
@@ -54,6 +51,9 @@ class EnemyWave:
             # update generator
             self.generateIdx = (self.generateIdx + 1) % 3
 
+        # update wave number
+        self.waveNb += 1
+
     def update_enemies(self):
         # enemies
         for enemy in self.enemies:
@@ -65,6 +65,19 @@ class EnemyWave:
             bullet.update()
             if bullet.y > cfg.WINDOW_CONFIG.HEIGHT:
                 Enemy.bullets.remove(bullet)
+
+    def draw_all(self):
+        if self.is_wave_freezed():
+            self.print_text()
+        else:
+            # draw enemies
+            for enemy in self.enemies:
+                enemy.draw()
+
+            # draw enemies' bullets
+            for bullet in Enemy.bullets:
+                bullet.draw()
+
 
     def wave_start(self):
         # generate new wave
@@ -87,6 +100,9 @@ class EnemyWave:
         self.waveFontRect = self.waveFont.get_rect()
         self.waveFontRect.center = (cfg.WINDOW_CONFIG.WIDTH // 2, cfg.WINDOW_CONFIG.HEIGHT // 2)
 
+        # remove all enemies' lasers
+        Enemy.bullets.clear()
+
         # update wave state
         self.freezeTimer = cfg.ENEMY_WAVE_CONFIG.WAVE_END_FREEZE_TIME
         self.waveStarted = False
@@ -106,7 +122,6 @@ class EnemyWave:
     def update(self):
         if self.is_wave_freezed():
             self.freezeTimer -= 1
-            self.print_text()
         elif self.check_wave_start_condition():
             self.wave_start()
         elif self.check_wave_end_condition():

@@ -43,6 +43,14 @@ class HealthBar:
             self.currentHp = self.totalHp
         self.currentHpBar.width = (self.currentHp * self.totalHpBar.width) // self.totalHp
 
+    def draw(self):
+        # draw total hp bar
+        pygame.draw.rect(self.game.screen, cfg.HEALTH_BAR_CONFIG.TOTAL_HP_BAR_COLOR, self.totalHpBar)
+
+        # draw current hp bar
+        pygame.draw.rect(self.game.screen, cfg.HEALTH_BAR_CONFIG.CURRENT_HP_BAR_COLOR, self.currentHpBar)
+
+
     def update(self):
         if self.showBar:
             # update position
@@ -50,9 +58,3 @@ class HealthBar:
             barY = self.activeObject.y + self.bottomEdgeYOffset + cfg.HEALTH_BAR_CONFIG.DISTANCE_FROM_BOTTOM_EDGE
             self.totalHpBar.topleft = (barX, barY)
             self.currentHpBar.topleft = (barX, barY)
-
-            # draw total hp bar
-            pygame.draw.rect(self.game.screen, cfg.HEALTH_BAR_CONFIG.TOTAL_HP_BAR_COLOR, self.totalHpBar)
-
-            # draw current hp bar
-            pygame.draw.rect(self.game.screen, cfg.HEALTH_BAR_CONFIG.CURRENT_HP_BAR_COLOR, self.currentHpBar)

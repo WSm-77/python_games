@@ -84,6 +84,23 @@ class ClassicGame(game_modes.GameMode):
             if bullet.y + bullet.get_height() < 0:
                 self.player.bullets.remove(bullet)
 
+    def draw_active_objects(self):
+        self.player.draw()
+        for bullet in self.player.bullets:
+            bullet.draw()
+        self.enemyWave.draw_all()
+
+    def draw_passive_objects(self):
+        scoreText = self.game.font.render(f"score: {self.score}", cfg.GAME_OVER_CONFIG.FONT_SIZE, (255, 255, 255))
+        scoreTextRect = scoreText.get_rect()
+        scoreTextRect.topleft = (10, 10)
+        self.game.screen.blit(scoreText, scoreTextRect)
+
+    def draw_screen(self):
+        self.game.screen.blit(self.game.background, (0, 0))
+        self.draw_active_objects()
+        self.draw_passive_objects()
+
     def update_game(self):
         self.handle_events()
         self.game.screen.blit(self.game.background, (0, 0))
@@ -93,7 +110,35 @@ class ClassicGame(game_modes.GameMode):
             self.handle_collisions()
         if self.player.is_destroyed():
             self.running = False
+
+        self.draw_screen()
         pygame.display.update()
 
     def start_game(self):
         super().start_game()
+
+    def show_game_over_message(self):
+        gameOverText = self.game.font.render(cfg.GAME_OVER_CONFIG.TEXT, cfg.GAME_OVER_CONFIG.FONT_SIZE, (255, 255, 255))
+        gameOverTextRect = gameOverText.get_rect()
+        gameOverTextRect.center = (cfg.WINDOW_CONFIG.WIDTH // 2, cfg.WINDOW_CONFIG.HEIGHT // 2)
+        for _ in range(cfg.GAME_OVER_CONFIG.FREEZE_TIME):
+            self.handle_events()
+            self.game.clock.tick(cfg.GAME_CONFIG.FPS)
+            self.draw_screen()
+            self.game.screen.blit(gameOverText, gameOverTextRect)
+            pygame.display.update()
+
+    def show_final_score(self):
+        finalScoreText = self.game.font.render(f"Your final score: {self.score}", cfg.GAME_OVER_CONFIG.FONT_SIZE, (255, 255, 255))
+        finalScoreTextRect = finalScoreText.get_rect()
+        finalScoreTextRect.center = (cfg.WINDOW_CONFIG.WIDTH // 2, cfg.WINDOW_CONFIG.HEIGHT // 2)
+        for _ in range(cfg.GAME_OVER_CONFIG.FREEZE_TIME):
+            self.handle_events()
+            self.game.clock.tick(cfg.GAME_CONFIG.FPS)
+            self.game.screen.blit(self.game.background, (0, 0))
+            self.game.screen.blit(finalScoreText, finalScoreTextRect)
+            pygame.display.update()
+
+    def game_over(self):
+        self.show_game_over_message()
+        self.show_final_score()

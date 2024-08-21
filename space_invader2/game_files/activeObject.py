@@ -51,4 +51,3 @@ class ActiveObject:
 
     def update(self):
         self.actions()
-        self.draw()

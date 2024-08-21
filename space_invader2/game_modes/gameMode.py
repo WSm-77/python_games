@@ -35,15 +35,9 @@ class GameMode:
 
         self.game_over()
 
+    # this method should be overwritten in derived class
     def game_over(self):
-        gameOverText = self.game.font.render(cfg.GAME_OVER_CONFIG.TEXT, cfg.GAME_OVER_CONFIG.FONT_SIZE, (255, 255, 255))
-        gameOverTextRect = gameOverText.get_rect()
-        gameOverTextRect.center = (cfg.WINDOW_CONFIG.WIDTH // 2, cfg.WINDOW_CONFIG.HEIGHT // 2)
-        for _ in range(cfg.GAME_OVER_CONFIG.FREEZE_TIME):
-            self.handle_events()
-            self.game.clock.tick(cfg.GAME_CONFIG.FPS)
-            self.game.screen.blit(gameOverText, gameOverTextRect)
-            pygame.display.update()
+        pass
 
     # this method should be overwritten in derived class
     def update_game(self):
