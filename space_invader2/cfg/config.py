@@ -116,8 +116,8 @@ GAME_CONFIG = GameConfig(
 )
 
 PLAYER_CONFIG = PlayerConfig(
-    SHIP_IMAGE = get_image_path("items", "pixel_ship_yellow.png"),
-    LASER_IMAGE = get_image_path("items", "pixel_laser_yellow.png"),
+    SHIP_IMAGE = get_image_path("items", "ship", "pixel_ship_yellow.png"),
+    LASER_IMAGE = get_image_path("items", "laser","pixel_laser_yellow.png"),
     VEL_PER_FRAME = 300 / GAME_CONFIG.FPS,
     SHOOT_COOLDOWN = GAME_CONFIG.FPS // 2,
     DEFAULT_HP = 5,
@@ -126,16 +126,16 @@ PLAYER_CONFIG = PlayerConfig(
 
 ENEMY_CONFIG = EnemyConfig(
     RED = EnemyImages(
-        SHIP_IMAGE = get_image_path("items", "pixel_ship_red_small.png"),
-        LASER_IMAGE = get_image_path("items", "pixel_laser_red.png")
+        SHIP_IMAGE = get_image_path("items", "ship", "pixel_ship_red_small.png"),
+        LASER_IMAGE = get_image_path("items", "laser", "pixel_laser_red.png")
     ),
     GREEN = EnemyImages(
-        SHIP_IMAGE = get_image_path("items", "pixel_ship_green_small.png"),
-        LASER_IMAGE = get_image_path("items", "pixel_laser_green.png")
+        SHIP_IMAGE = get_image_path("items", "ship", "pixel_ship_green_small.png"),
+        LASER_IMAGE = get_image_path("items", "laser", "pixel_laser_green.png")
     ),
     BLUE = EnemyImages(
-        SHIP_IMAGE = get_image_path("items", "pixel_ship_blue_small.png"),
-        LASER_IMAGE = get_image_path("items", "pixel_laser_blue.png")
+        SHIP_IMAGE = get_image_path("items", "ship", "pixel_ship_blue_small.png"),
+        LASER_IMAGE = get_image_path("items", "laser", "pixel_laser_blue.png")
     ),
     VEL_PER_FRAME = 100 / GAME_CONFIG.FPS,
     SHOOTING_CHANCE = GAME_CONFIG.FPS * 3,
