@@ -2,3 +2,4 @@
 *__pycache__
 space_invader/tmp
 *.txt
+!requirements.txt
