@@ -3,6 +3,7 @@
 ############################
 
 import pygame
+import sys
 
 #########################
 # local library imports #
@@ -32,6 +33,13 @@ class GameMode:
             self.update_game()
         #end while
 
+        self.game_over()
+
+    # this method should be overwritten in derived class
+    def game_over(self):
+        pass
+
+    # this method should be overwritten in derived class
     def update_game(self):
         pass
 
@@ -39,3 +47,5 @@ class GameMode:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+                pygame.quit()
+                sys.exit()

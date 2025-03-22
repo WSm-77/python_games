@@ -23,9 +23,12 @@ class Game:
         # setting window properties
         self.screen = pygame.display.set_mode((cfg.WINDOW_CONFIG.WIDTH, cfg.WINDOW_CONFIG.HEIGHT))
         self.background = pygame.transform.scale(
-            pygame.image.load(cfg.WINDOW_CONFIG.BACKGROUND_PATH), (cfg.WINDOW_CONFIG.WIDTH, cfg.WINDOW_CONFIG.HEIGHT)
+            pygame.image.load(cfg.WINDOW_CONFIG.BACKGROUND_IMAGE), (cfg.WINDOW_CONFIG.WIDTH, cfg.WINDOW_CONFIG.HEIGHT)
         )
         self.clock = pygame.time.Clock()
+
+        # font
+        self.font = pygame.font.Font(cfg.GAME_CONFIG.FONT, cfg.GAME_CONFIG.FONT_SIZE)
 
         # game
         self.currentGame = None
